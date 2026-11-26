@@ -1,0 +1,559 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080b12">
+<title>SHADOW SYSTEM V3</title>
+<style>
+:root {
+  --bg:#080b12;
+  --panel:#111827;
+  --panel2:#192338;
+  --purple:#a855f7;
+  --blue:#38bdf8;
+  --text:#f4f4f5;
+  --muted:#9ca3af;
+  --line:#293449;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:Arial,sans-serif;
+}
+header{
+  padding:22px 17px;
+  background:linear-gradient(135deg,#17112c,#101b32);
+  border-bottom:1px solid var(--line);
+}
+.logo{font-size:25px;font-weight:900;letter-spacing:3px}
+.logo span{color:var(--purple)}
+.subtitle{color:var(--muted);font-size:12px;margin-top:6px}
+main{max-width:850px;margin:auto;padding:15px}
+nav{
+  display:flex;gap:7px;overflow-x:auto;padding:10px 0 15px;
+}
+nav button{
+  white-space:nowrap;background:var(--panel);
+  border:1px solid var(--line);color:white;
+  padding:11px 15px;border-radius:10px;
+}
+nav button.active{background:#54258b;border-color:var(--purple)}
+section{display:none}
+section.active{display:block}
+.card{
+  background:var(--panel);border:1px solid var(--line);
+  border-radius:15px;padding:17px;margin-bottom:15px;
+}
+h2{font-size:19px;margin:0 0 15px}
+h3{font-size:15px;margin:10px 0}
+p{color:var(--muted);line-height:1.5;font-size:14px}
+label{display:block;color:var(--muted);font-size:13px;margin:13px 0 6px}
+input,select{
+  width:100%;padding:12px;border-radius:9px;
+  border:1px solid var(--line);background:#080f1c;
+  color:white;font-size:15px;
+}
+button.primary{
+  background:linear-gradient(90deg,#7c3aed,#2563eb);
+  color:white;border:0;padding:13px 17px;
+  border-radius:10px;font-weight:bold;width:100%;
+  margin-top:13px;
+}
+button.secondary{
+  background:var(--panel2);color:white;
+  border:1px solid var(--line);padding:10px;
+  border-radius:9px;
+}
+.stats{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:9px;
+}
+.stat{
+  background:var(--panel2);padding:13px 8px;
+  text-align:center;border-radius:11px;
+}
+.stat strong{display:block;font-size:21px;color:#c084fc}
+.stat small{color:var(--muted);font-size:11px}
+.hero{
+  text-align:center;padding:25px 10px;
+  background:radial-gradient(ellipse at center,#30205a,#111827 70%);
+  border-radius:15px;border:1px solid #49316a;
+}
+.avatar{font-size:75px;margin:12px}
+.aura{color:#c084fc;text-shadow:0 0 20px #a855f7}
+.rank{color:#c084fc;font-weight:bold;letter-spacing:2px}
+.progress{height:9px;background:#263044;border-radius:10px;overflow:hidden;margin-top:10px}
+.progress div{height:100%;background:linear-gradient(90deg,#9333ea,#38bdf8);width:0%}
+.exercise{
+  display:grid;grid-template-columns:105px 1fr;
+  gap:13px;margin:12px 0;padding:11px;
+  background:#0c1422;border:1px solid var(--line);
+  border-radius:12px;
+}
+.exercise img{
+  width:105px;height:105px;object-fit:cover;border-radius:9px;
+  background:#263044;
+}
+.exercise p{font-size:12px;margin:5px 0}
+.exercise a{color:#60a5fa;font-size:12px}
+.day{
+  border-left:3px solid var(--purple);
+  padding:12px;margin:10px 0;background:#101827;
+  border-radius:0 10px 10px 0;
+}
+.day.done{border-color:#22c55e}
+.tag{
+  display:inline-block;padding:5px 8px;
+  background:#302047;color:#d8b4fe;
+  border-radius:20px;font-size:11px;margin:3px;
+}
+footer{text-align:center;color:#64748b;padding:25px;font-size:11px}
+@media(max-width:420px){
+  .stats{grid-template-columns:repeat(3,1fr)}
+  .exercise{grid-template-columns:85px 1fr}
+  .exercise img{width:85px;height:95px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">SHADOW <span>SYSTEM</span></div>
+  <div class="subtitle">YOUR JOURNEY. YOUR QUEST. YOUR LEVEL.</div>
+</header>
+
+<main>
+<nav>
+  <button class="active" onclick="showTab('dashboard',this)">SYSTEM</button>
+  <button onclick="showTab('character',this)">HUNTER</button>
+  <button onclick="showTab('planner',this)">PLANNER</button>
+  <button onclick="showTab('workout',this)">WORKOUT</button>
+  <button onclick="showTab('quests',this)">QUESTS</button>
+  <button onclick="showTab('profile',this)">STATUS</button>
+</nav>
+
+<section id="dashboard" class="active">
+  <div class="hero">
+    <div class="rank" id="dashRank">E-RANK HUNTER</div>
+    <div class="avatar aura" id="dashAvatar">⚔️</div>
+    <h2 id="dashName">SHADOW HUNTER</h2>
+    <p id="dashClass">Choose your hunter identity</p>
+    <span class="tag">SYSTEM ONLINE</span>
+  </div>
+
+  <div class="card">
+    <h2>Hunter Status</h2>
+    <div class="stats">
+      <div class="stat"><strong id="xp">0</strong><small>XP</small></div>
+      <div class="stat"><strong id="level">1</strong><small>LEVEL</small></div>
+      <div class="stat"><strong id="completed">0</strong><small>QUESTS DONE</small></div>
+    </div>
+    <p id="xpText">0 / 100 XP to next level</p>
+    <div class="progress"><div id="xpBar"></div></div>
+  </div>
+
+  <div class="card">
+    <h2>Today's System Message</h2>
+    <p id="todayMessage">Your journey begins today. Complete your first quest!</p>
+    <button class="primary" onclick="showTab('planner',document.querySelectorAll('nav button')[2])">OPEN DAILY PLANNER</button>
+  </div>
+
+  <div class="card">
+    <h2>Hunter Rank</h2>
+    <p>E → D → C → B → A → S</p>
+    <p>Earn XP through completed training sessions. Take rest days when needed.</p>
+  </div>
+</section>
+
+<section id="character">
+  <div class="card">
+    <h2>Hunter Creation System</h2>
+    <div class="hero">
+      <div class="avatar aura" id="previewAvatar">⚔️</div>
+      <h2 id="previewName">SHADOW HUNTER</h2>
+      <span class="tag" id="previewPower">SHADOW POWER</span>
+    </div>
+
+    <label>Hunter Name</label>
+    <input id="hunterName" placeholder="Enter your hunter name" maxlength="24">
+
+    <label>Hunter Class</label>
+    <select id="hunterClass">
+      <option>Shadow Warrior</option>
+      <option>Assassin</option>
+      <option>Monarch</option>
+      <option>Mage</option>
+      <option>Guardian</option>
+      <option>Beast Hunter</option>
+    </select>
+
+    <label>Hair Style</label>
+    <select id="hair">
+      <option>Messy</option><option>Spiky</option>
+      <option>Short</option><option>Long</option>
+      <option>Fluffy</option>
+    </select>
+
+    <label>Hair Colour</label>
+    <select id="hairColor">
+      <option>Black</option><option>Silver</option>
+      <option>White</option><option>Blue</option>
+      <option>Purple</option><option>Red</option>
+    </select>
+
+    <label>Eye Colour</label>
+    <select id="eyes">
+      <option>Blue</option><option>Purple</option>
+      <option>Red</option><option>Golden</option>
+      <option>Silver</option>
+    </select>
+
+    <label>Outfit</label>
+    <select id="outfit">
+      <option>Shadow Armour</option>
+      <option>Black Coat</option>
+      <option>Hunter Uniform</option>
+      <option>Royal Outfit</option>
+      <option>Dark Hoodie</option>
+    </select>
+
+    <label>Weapon</label>
+    <select id="weapon">
+      <option>Shadow Sword</option>
+      <option>Dual Daggers</option>
+      <option>Great Sword</option>
+      <option>Magic Staff</option>
+      <option>Shadow Bow</option>
+    </select>
+
+    <label>Shadow Power</label>
+    <select id="power">
+      <option>Shadow Aura</option>
+      <option>Dark Flame</option>
+      <option>Void Energy</option>
+      <option>Lightning</option>
+      <option>Frost</option>
+    </select>
+
+    <button class="primary" onclick="saveCharacter()">SAVE HUNTER</button>
+  </div>
+</section>
+
+<section id="planner">
+  <div class="card">
+    <h2>Daily Training Planner</h2>
+    <p>Choose a comfortable training schedule. Your plan is a guide, not a requirement.</p>
+
+    <label>Available Time</label>
+    <select id="minutes">
+      <option value="15">15 minutes</option>
+      <option value="30" selected>30 minutes</option>
+      <option value="45">45 minutes</option>
+      <option value="60">60 minutes</option>
+    </select>
+
+    <label>Training Location</label>
+    <select id="place">
+      <option>Home</option><option>Gym</option>
+    </select>
+
+    <label>Experience Level</label>
+    <select id="experience">
+      <option>Beginner</option><option>Intermediate</option>
+    </select>
+
+    <label>Training Days Per Week</label>
+    <select id="frequency">
+      <option value="3">3 days</option>
+      <option value="4" selected>4 days</option>
+      <option value="5">5 days</option>
+    </select>
+
+    <button class="primary" onclick="generatePlan()">GENERATE MY PLAN</button>
+  </div>
+  <div class="card">
+    <h2>Your Seven-Day Schedule</h2>
+    <div id="schedule"><p>Generate your training plan to see your schedule.</p></div>
+  </div>
+</section>
+
+<section id="workout">
+  <div class="card">
+    <h2>Exercise Library</h2>
+    <p>Choose an exercise and use the video search to learn its correct technique.</p>
+    <div id="exerciseList"></div>
+  </div>
+  <div class="card">
+    <h2>Complete Training Session</h2>
+    <p>When you finish a comfortable workout, record it here.</p>
+    <button class="primary" onclick="completeWorkout()">COMPLETE WORKOUT +25 XP</button>
+  </div>
+</section>
+
+<section id="quests">
+  <div class="card">
+    <h2>Daily Quests</h2>
+    <div id="questList"></div>
+  </div>
+  <div class="card">
+    <h2>Weekly Challenge</h2>
+    <p>Build a balanced routine with training, recovery and consistency.</p>
+    <span class="tag">REST IS PART OF PROGRESS</span>
+  </div>
+</section>
+
+<section id="profile">
+  <div class="card">
+    <h2>Hunter Status</h2>
+    <div class="stats">
+      <div class="stat"><strong id="profileXP">0</strong><small>TOTAL XP</small></div>
+      <div class="stat"><strong id="profileLevel">1</strong><small>LEVEL</small></div>
+      <div class="stat"><strong id="profileDone">0</strong><small>SESSIONS</small></div>
+    </div>
+    <h3>Hunter Rank</h3>
+    <div class="rank" id="profileRank">E-RANK</div>
+    <h3>Workout History</h3>
+    <div id="history"><p>No completed sessions yet.</p></div>
+    <button class="secondary" onclick="resetProgress()">RESET MY PROGRESS</button>
+  </div>
+</section>
+
+<footer>SHADOW SYSTEM V3 · ORIGINAL FAN-INSPIRED FITNESS CONCEPT</footer>
+</main>
+
+<script>
+const defaults = {
+  name:"SHADOW HUNTER",
+  hunterClass:"Shadow Warrior",
+  hair:"Messy",
+  hairColor:"Black",
+  eyes:"Blue",
+  outfit:"Shadow Armour",
+  weapon:"Shadow Sword",
+  power:"Shadow Aura",
+  xp:0,
+  completed:0,
+  history:[],
+  quests:[],
+  plan:null
+};
+
+let data;
+try {
+  data = {...defaults,...JSON.parse(localStorage.getItem("shadowSystemV3") || "{}")};
+} catch(e) {
+  data = {...defaults};
+}
+
+function save(){
+  localStorage.setItem("shadowSystemV3",JSON.stringify(data));
+  updateUI();
+}
+
+function showTab(id,button){
+  document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
+  if(button)button.classList.add("active");
+}
+
+function getLevel(){return Math.floor(data.xp/100)+1}
+
+function getRank(){
+  const level=getLevel();
+  if(level>=30)return "S";
+  if(level>=20)return "A";
+  if(level>=12)return "B";
+  if(level>=7)return "C";
+  if(level>=3)return "D";
+  return "E";
+}
+
+function updateUI(){
+  const level=getLevel();
+  const rank=getRank();
+  const xpInLevel=data.xp%100;
+
+  document.getElementById("xp").textContent=data.xp;
+  document.getElementById("level").textContent=level;
+  document.getElementById("completed").textContent=data.completed;
+  document.getElementById("xpText").textContent=xpInLevel+" / 100 XP to next level";
+  document.getElementById("xpBar").style.width=xpInLevel+"%";
+  document.getElementById("dashRank").textContent=rank+"-RANK HUNTER";
+  document.getElementById("dashName").textContent=data.name;
+  document.getElementById("dashClass").textContent=data.hunterClass;
+  document.getElementById("profileXP").textContent=data.xp;
+  document.getElementById("profileLevel").textContent=level;
+  document.getElementById("profileDone").textContent=data.completed;
+  document.getElementById("profileRank").textContent=rank+"-RANK";
+  document.getElementById("previewName").textContent=data.name;
+  document.getElementById("previewPower").textContent=data.power;
+  document.getElementById("dashAvatar").textContent=weaponEmoji();
+  document.getElementById("previewAvatar").textContent=weaponEmoji();
+
+  document.getElementById("history").innerHTML=data.history.length
+    ?data.history.slice().reverse().map(x=>`<div class="day">✓ ${escapeHTML(x)}</div>`).join("")
+    :"<p>No completed sessions yet.</p>";
+
+  document.getElementById("todayMessage").textContent=
+    data.completed===0
+    ?"Your journey begins today. Start with a comfortable first quest!"
+    :"Your progress is saved. Keep your routine balanced and consistent.";
+
+  renderQuests();
+}
+
+function weaponEmoji(){
+  const w=data.weapon;
+  if(w.includes("Dagger"))return "🗡️";
+  if(w.includes("Sword"))return "⚔️";
+  if(w.includes("Staff"))return "🔮";
+  if(w.includes("Bow"))return "🏹";
+  return "🛡️";
+}
+
+function escapeHTML(s){
+  return String(s).replace(/[&<>"']/g,c=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  })[c]);
+}
+
+function saveCharacter(){
+  data.name=document.getElementById("hunterName").value.trim()||"SHADOW HUNTER";
+  data.hunterClass=document.getElementById("hunterClass").value;
+  data.hair=document.getElementById("hair").value;
+  data.hairColor=document.getElementById("hairColor").value;
+  data.eyes=document.getElementById("eyes").value;
+  data.outfit=document.getElementById("outfit").value;
+  data.weapon=document.getElementById("weapon").value;
+  data.power=document.getElementById("power").value;
+  save();
+  alert("Hunter profile saved!");
+}
+
+const exercises=[
+  {name:"Bodyweight Squats",type:"Legs",home:"3 sets · 8–12 reps",gym:"3 sets · 8–12 reps",desc:"Controlled lower-body movement.",img:"https://images.unsplash.com/photo-1566241142559-40e1dab266c6?w=500",search:"bodyweight squat exercise proper form"},
+  {name:"Wall Push-ups",type:"Upper body",home:"2 sets · 8–12 reps",gym:"2 sets · 8–12 reps",desc:"A beginner-friendly pushing exercise.",img:"https://images.unsplash.com/photo-1599058917212-d750089bc07e?w=500",search:"wall push up exercise tutorial"},
+  {name:"Glute Bridges",type:"Glutes",home:"2 sets · 10–12 reps",gym:"2 sets · 10–12 reps",desc:"Controlled hip movement.",img:"https://images.unsplash.com/photo-1518611012118-696072aa579a?w=500",search:"glute bridge exercise tutorial"},
+  {name:"Bird Dogs",type:"Core",home:"2 sets · 8 each side",gym:"2 sets · 8 each side",desc:"Move slowly while keeping balance.",img:"https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=500",search:"bird dog exercise tutorial"},
+  {name:"Reverse Lunges",type:"Legs",home:"2 sets · 8 each leg",gym:"2 sets · 8 each leg",desc:"Use a comfortable range of motion.",img:"https://images.unsplash.com/photo-1434596922112-19c563067271?w=500",search:"reverse lunge exercise tutorial"},
+  {name:"Plank",type:"Core",home:"2 sets · 15–30 seconds",gym:"2 sets · 15–30 seconds",desc:"Keep breathing and maintain a comfortable position.",img:"https://images.unsplash.com/photo-1566241142559-40e1dab266c6?w=500",search:"beginner plank exercise tutorial"},
+  {name:"Walking",type:"Cardio",home:"5–15 minutes",gym:"5–15 minutes",desc:"Choose a comfortable pace.",img:"https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?w=500",search:"walking exercise beginner guidance"}
+];
+
+function renderExercises(){
+  const place=document.getElementById("place")?.value||"Home";
+  document.getElementById("exerciseList").innerHTML=exercises.map(e=>`
+    <div class="exercise">
+      <img src="${e.img}" alt="${e.name}" loading="lazy">
+      <div>
+        <strong>${e.name}</strong>
+        <p>${e.type} · ${place==="Home"?e.home:e.gym}</p>
+        <p>${e.desc}</p>
+        <a href="https://www.youtube.com/results?search_query=${encodeURIComponent(e.search)}" target="_blank" rel="noopener">▶ Watch exercise videos</a>
+      </div>
+    </div>`).join("");
+}
+
+function generatePlan(){
+  const frequency=Number(document.getElementById("frequency").value);
+  const minutes=Number(document.getElementById("minutes").value);
+  const place=document.getElementById("place").value;
+  const experience=document.getElementById("experience").value;
+
+  const days=["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
+  const training=["Full Body","Lower Body","Upper Body","Mobility & Core","Full Body"];
+  const restDays=7-frequency;
+
+  let plan=days.map((day,i)=>({
+    day,
+    workout:i<frequency?training[i%training.length]:"Recovery",
+    rest:i>=frequency
+  }));
+
+  data.plan={frequency,minutes,place,experience,plan};
+  save();
+
+  document.getElementById("schedule").innerHTML=plan.map((d,i)=>`
+    <div class="day ${d.rest?"":"done"}">
+      <strong>${d.day}</strong>
+      <p>${d.rest?"🌙 Rest and gentle recovery":"⚔️ "+d.workout+" · "+minutes+" minutes"}</p>
+      <span class="tag">${d.rest?"RECOVERY DAY":place.toUpperCase()}</span>
+    </div>`).join("");
+
+  renderExercises();
+}
+
+function completeWorkout(){
+  data.xp+=25;
+  data.completed++;
+  data.history.push(new Date().toLocaleDateString()+" · Training session");
+  save();
+  alert("Quest complete! +25 XP earned.");
+}
+
+const questNames=[
+  "Complete a comfortable training session",
+  "Take a short walk or enjoy outdoor movement",
+  "Take time to stretch gently",
+  "Drink water throughout the day",
+  "Get enough sleep and recovery",
+  "Learn one exercise technique",
+  "Enjoy a rest day when your body needs it"
+];
+
+function renderQuests(){
+  const today=new Date().toDateString();
+  const completedToday=data.quests.filter(q=>q.date===today).map(q=>q.name);
+  document.getElementById("questList").innerHTML=questNames.map((q,i)=>`
+    <div class="day">
+      <label style="display:flex;gap:10px;align-items:center;color:white">
+        <input type="checkbox" style="width:19px;height:19px"
+          ${completedToday.includes(q)?"checked":""}
+          onchange="completeQuest(${i},this.checked)">
+        ${q}
+      </label>
+    </div>`).join("");
+}
+
+function completeQuest(index,checked){
+  const today=new Date().toDateString();
+  const name=questNames[index];
+  data.quests=data.quests.filter(q=>!(q.date===today&&q.name===name));
+  if(checked){
+    data.quests.push({date:today,name});
+    data.xp+=10;
+  }
+  save();
+}
+
+function resetProgress(){
+  if(!confirm("Reset all your XP, sessions and saved hunter progress?"))return;
+  data={...defaults,history:[],quests:[]};
+  localStorage.removeItem("shadowSystemV3");
+  location.reload();
+}
+
+document.getElementById("hunterName").value=data.name;
+document.getElementById("hunterClass").value=data.hunterClass;
+document.getElementById("hair").value=data.hair;
+document.getElementById("hairColor").value=data.hairColor;
+document.getElementById("eyes").value=data.eyes;
+document.getElementById("outfit").value=data.outfit;
+document.getElementById("weapon").value=data.weapon;
+document.getElementById("power").value=data.power;
+
+renderExercises();
+updateUI();
+
+if(data.plan){
+  document.getElementById("minutes").value=data.plan.minutes;
+  document.getElementById("place").value=data.plan.place;
+  document.getElementById("experience").value=data.plan.experience;
+  document.getElementById("frequency").value=data.plan.frequency;
+  generatePlan();
+}
+</script>
+</body>
+</html>
